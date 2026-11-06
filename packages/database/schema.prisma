@@ -1,0 +1,164 @@
+// NudgePay AI Relational Database Schema
+// Volume II: Relational Database & Ledger Design (Strict Exact-Cent Precision)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionCategory {
+  GROCERIES
+  ONLINE_SHOPPING
+  SUBSCRIPTION
+  GENERAL
+}
+
+enum RecommendationAction {
+  CUT
+  NEGOTIATE
+  CAP
+  POOL
+}
+
+enum SplitStatus {
+  PENDING
+  PARTIALLY_SETTLED
+  SETTLED
+  CANCELLED
+}
+
+model User {
+  id              String         @id @default(uuid())
+  phoneNumber     String         @unique
+  fullName        String
+  email           String?        @unique
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Ledger and Accounts
+  walletBalanceCents Int         @default(0) // Exact cents: e.g. 1000 = $10.00
+  safeToSpendCents   Int         @default(0)
+  
+  // Relations
+  circleMemberships CircleMember[]
+  transactions      Transaction[]
+  billsInitiated    BillSplit[]  @relation("Initiator")
+  billShares        SplitParticipant[]
+  auditLogs         LedgerAuditEntry[]
+  receipts          ReceiptScan[]
+}
+
+model Circle {
+  id          String         @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime       @default(now())
+  members     CircleMember[]
+  bills       BillSplit[]
+}
+
+model CircleMember {
+  id        String   @id @default(uuid())
+  circleId  String
+  userId    String
+  role      String   @default("MEMBER") // ADMIN, MEMBER
+  circle    Circle   @relation(fields: [circleId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([circleId, userId])
+}
+
+model Transaction {
+  id              String              @id @default(uuid())
+  userId          String
+  externalPlaidId String?             @unique
+  merchantName    String
+  amountCents     Int                 // Exact integer cents
+  category        TransactionCategory @default(GENERAL)
+  isRecurring     Boolean             @default(false)
+  transactionDate DateTime
+  createdAt       DateTime            @default(now())
+
+  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recommendations AIRecommendation[]
+}
+
+model BillSplit {
+  id             String             @id @default(uuid())
+  initiatorId    String
+  circleId       String?
+  title          String
+  totalCents     Int
+  status         SplitStatus        @default(PENDING)
+  createdAt      DateTime           @default(now())
+  
+  initiator      User               @relation("Initiator", fields: [initiatorId], references: [id])
+  circle         Circle?            @relation(fields: [circleId], references: [id])
+  participants   SplitParticipant[]
+}
+
+model SplitParticipant {
+  id           String      @id @default(uuid())
+  billSplitId  String
+  userId       String?     // Can be null for zero-registration light identity guest
+  guestPhone   String?     // For non-registered participants
+  guestName    String?
+  shareCents   Int         // Deterministic exact cent share
+  isSettled    Boolean     @default(false)
+  settledAt    DateTime?
+  paymentRef   String?     // Stripe payment intent ID
+
+  billSplit    BillSplit   @relation(fields: [billSplitId], references: [id], onDelete: Cascade)
+  user         User?       @relation(fields: [userId], references: [id])
+}
+
+model ReceiptScan {
+  id           String      @id @default(uuid())
+  userId       String
+  storeName    String
+  totalCents   Int
+  pHash64      String      // 64-bit Perceptual Hash fingerprint
+  scannedAt    DateTime    @default(now())
+  lineItems    ReceiptItem[]
+
+  user         User        @relation(fields: [userId], references: [id])
+  @@index([pHash64])
+}
+
+model ReceiptItem {
+  id            String      @id @default(uuid())
+  receiptScanId String
+  name          String
+  priceCents    Int
+  quantity      Int         @default(1)
+  receiptScan   ReceiptScan @relation(fields: [receiptScanId], references: [id], onDelete: Cascade)
+}
+
+model AIRecommendation {
+  id             String               @id @default(uuid())
+  transactionId  String
+  actionType     RecommendationAction
+  title          String
+  description    String
+  annualSavings  Int                  // In Cents
+  isExecuted     Boolean              @default(false)
+  createdAt      DateTime             @default(now())
+
+  transaction    Transaction          @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
+
+model LedgerAuditEntry {
+  id          String   @id @default(uuid())
+  userId      String
+  creditCents Int      @default(0)
+  debitCents  Int      @default(0)
+  source      String   // STRIPE_CONNECT, BILL_SPLIT, WALLET_SWEEP
+  referenceId String
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}

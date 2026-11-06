@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  ai-engine:
+    build: ./services/ai-engine
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - ENV=development
+
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - AI_SERVICE_URL=http://ai-engine:8001
+    depends_on:
+      - ai-engine
+
+  web-client:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./web-client:/usr/share/nginx/html:ro
+    depends_on:
+      - api-gateway

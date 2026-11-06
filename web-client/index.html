@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NudgePay AI — Autonomous FinTech Agent & Smart Orchestration POC</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">NP</div>
+        <div>
+          <h2>NudgePay AI</h2>
+          <span class="version-tag">v4.0 Master POC</span>
+        </div>
+      </div>
+      
+      <div class="user-card">
+        <div class="user-avatar">AR</div>
+        <div class="user-info">
+          <div class="user-name">Alex Rivera</div>
+          <div class="user-phone">+1 (415) 555-0192</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" onclick="switchTab('dashboard')">
+          <span class="icon">📊</span> Overview & Wallet
+        </button>
+        <button class="nav-item" onclick="switchTab('feature1')">
+          <span class="icon">🔄</span> Subscription Swapper & Pooling
+        </button>
+        <button class="nav-item" onclick="switchTab('feature2')">
+          <span class="icon">🧾</span> Receipt OCR & Smart Splitter
+        </button>
+        <button class="nav-item" onclick="switchTab('feature3')">
+          <span class="icon">🏷️</span> Barcode & Cashier Match
+        </button>
+        <button class="nav-item" onclick="switchTab('feature4')">
+          <span class="icon">💸</span> Exact-Cent Group Split
+        </button>
+        <button class="nav-item" onclick="switchTab('roadmap')">
+          <span class="icon">✨</span> Autonomous AI Roadmap
+        </button>
+      </nav>
+
+      <div class="system-status">
+        <div class="status-indicator online"></div>
+        <div>
+          <div class="status-title">FastAPI AI Engine: Active</div>
+          <div class="status-meta">L1/L2 Guardrails Verified</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dynamic Content -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">Executive FinTech Dashboard</h1>
+          <p id="page-subtitle">Autonomous interventionist money-saving orchestration</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" onclick="runLangGraphAgent()">
+            ⚡ Run LangGraph Agent Audit
+          </button>
+          <div class="wallet-pill">
+            <span class="label">Stripe In-App Wallet:</span>
+            <span class="amount" id="wallet-balance">$45.20</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB 1: OVERVIEW & DASHBOARD -->
+      <section id="tab-dashboard" class="tab-pane active">
+        <div class="stats-grid">
+          <div class="stat-card highlight">
+            <div class="stat-title">Real-Time Safe-To-Spend Buffer</div>
+            <div class="stat-value" id="safe-to-spend-val">$612.50</div>
+            <div class="stat-desc">30-Day SARIMA forecast protects $120.00 emergency buffer</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Recurring Liquidity Burn</div>
+            <div class="stat-value">$147.97/mo</div>
+            <div class="stat-desc">4 subscriptions tracked across Sunset Roommates circle</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Unlocked Annual Savings</div>
+            <div class="stat-value text-emerald">$238.40/yr</div>
+            <div class="stat-desc">Across pooling, tier migration & supermarket swaps</div>
+          </div>
+        </div>
+
+        <div class="dashboard-cards-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Active Circle: Sunset Roommates (3 Members)</h3>
+              <span class="badge">Open-Banking Linked</span>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Linked Recurring Service</th>
+                    <th>Current Spend</th>
+                    <th>Autonomous Optimization</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Alex Rivera (You)</strong></td>
+                    <td>Spotify Premium Standalone</td>
+                    <td>$11.99/mo</td>
+                    <td><span class="pill pill-warning">Pooling Candidate</span></td>
+                  </tr>
+                  <tr>
+                    <td>Jordan Lee</td>
+                    <td>Spotify Premium Standalone</td>
+                    <td>$11.99/mo</td>
+                    <td><span class="pill pill-warning">Pooling Candidate</span></td>
+                  </tr>
+                  <tr>
+                    <td>Taylor Swift</td>
+                    <td>Spotify Premium Standalone</td>
+                    <td>$11.99/mo</td>
+                    <td><span class="pill pill-warning">Pooling Candidate</span></td>
+                  </tr>
+                  <tr>
+                    <td>Alex Rivera (You)</td>
+                    <td>Hulu (No Ads Standalone)</td>
+                    <td>$10.00/mo</td>
+                    <td><span class="pill pill-info">Tier Downgrade Available</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>AI Agent Execution Log</h3>
+              <span class="badge badge-ai">3-Node LangGraph</span>
+            </div>
+            <div class="console-box" id="agent-console">
+              [System Initialized]: NudgePay AI Engine v4.0 loaded.<br>
+              [Node 1: Deterministic Auditor]: Aggregating circle transactions...<br>
+              [Node 2: Market Benchmarking]: Live catalog check: Spotify Family tier ($19.99/mo).<br>
+              [Node 3: Advisory Synthesis]: 2 actionable recommendations ready. Guardrails L1/L2 passed.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SUBSCRIPTION SWAPPER & POOLING -->
+      <section id="tab-feature1" class="tab-pane">
+        <div class="feature-header">
+          <h2>Core Feature 1: Subscription Swapper & Circle Pooling</h2>
+          <p>Uncovers silent subscription creep, renegotiates rates, and pools duplicate roommate plans into high-savings family tiers.</p>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Circle Subscription Pooling Opportunity</h3>
+            <div class="pooling-box">
+              <div class="pooling-meta">
+                <h4>Spotify Premium Duplicate Charges Detected</h4>
+                <p>3 members in "Sunset Roommates" are paying standalone $11.99/month accounts.</p>
+              </div>
+              <div class="pricing-comparison">
+                <div class="price-col">
+                  <span class="type">Current Separate Total</span>
+                  <span class="price strike">$35.97 / mo</span>
+                </div>
+                <div class="arrow">➜</div>
+                <div class="price-col highlight">
+                  <span class="type">Pooled Family Plan (6 Slots)</span>
+                  <span class="price">$19.99 / mo</span>
+                </div>
+              </div>
+              <div class="savings-alert">
+                🔥 <strong>Total Circle Savings:</strong> $191.76 / year ($63.92 saved per person annually).
+              </div>
+              <button class="btn btn-primary" onclick="execute1TapSwap('Spotify')">
+                ⚡ Execute 1-Tap Circle Pool Switch
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Automated Tier Downgrade & Bundle Matching</h3>
+            <div class="pooling-box">
+              <div class="pooling-meta">
+                <h4>Hulu Subscription Optimization</h4>
+                <p>Detected $10.00 charge. Ad-supported bundle and promo discount tiers identified.</p>
+              </div>
+              <div class="pricing-comparison">
+                <div class="price-col">
+                  <span class="type">Current Price</span>
+                  <span class="price strike">$10.00 / mo</span>
+                </div>
+                <div class="arrow">➜</div>
+                <div class="price-col highlight">
+                  <span class="type">Recommended Ad-Supported</span>
+                  <span class="price">$7.99 / mo</span>
+                </div>
+              </div>
+              <div class="savings-alert">
+                💡 <strong>Your Annual Savings:</strong> $24.12 / year without losing stream access.
+              </div>
+              <button class="btn btn-secondary" onclick="execute1TapSwap('Hulu')">
+                1-Tap Apply Hulu Bundle Promo
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: RECEIPT OCR & SMART BASKET SPLITTER -->
+      <section id="tab-feature2" class="tab-pane">
+        <div class="feature-header">
+          <h2>Core Feature 2: Paper Receipt Grocery Manager & Smart Basket Splitter</h2>
+          <p>Scans printed supermarket receipts via simulated Textract OCR, guards against duplicate fraud using 64-bit pHash, and computes multi-store split carts.</p>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Simulate OCR Receipt Upload</h3>
+            <label class="form-label">Receipt Text Extracted from Camera OCR:</label>
+            <textarea id="receipt-text-input" class="textarea-input" rows="7">
+Hass Avocados 4pk - $3.49
+Whole Milk 1 Gal - $3.99
+Bounty Paper Towels 12pk - $18.49
+Organic Eggs 12ct - $4.99
+Tide Pods Detergent 42ct - $14.99
+Honeycrisp Apples 3lb - $5.99
+Chicken Breast Fresh 2lb - $8.99
+Dawn Dish Soap 3pk - $7.99
+            </textarea>
+            <div class="button-row">
+              <button class="btn btn-primary" onclick="simulateReceiptOCR()">
+                📸 Process Receipt & Run Smart Basket Splitter
+              </button>
+              <button class="btn btn-danger" onclick="testDuplicateFraud()">
+                ⚠️ Test Duplicate Receipt Fraud Guard (pHash)
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>AI Smart Basket Splitter Result</h3>
+            <div id="ocr-results-container">
+              <div class="empty-state">Click "Process Receipt" to calculate multi-store basket savings.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: IN-STORE BARCODE SCANNER & CASHIER PASS -->
+      <section id="tab-feature3" class="tab-pane">
+        <div class="feature-header">
+          <h2>Core Feature 3: In-Store Barcode Scanner & Cashier Price-Match Pass</h2>
+          <p>Scan any physical product UPC. NudgePay queries competitors in sub-850ms, generating a verified Cashier Pass or calculating fuel-adjusted store detour net savings.</p>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Scan In-Store Product Barcode</h3>
+            <div class="form-group">
+              <label class="form-label">Select Demo Product Barcode:</label>
+              <select id="barcode-select" class="form-select">
+                <option value="012345678901">UPC: 012345678901 — Sony WH-1000XM5 Headphones (In Target)</option>
+                <option value="098765432109">UPC: 098765432109 — Ninja Air Fryer Pro 4-in-1 (In Walmart)</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="lookupBarcode()">
+              🔍 Scan Barcode (<850ms SLA)
+            </button>
+
+            <div class="sub-box mt-4">
+              <h4>How the Cashier Pass Works</h4>
+              <p>When competitors sell the exact SKU for less, NudgePay displays the official store price-matching policy so cashiers immediately discount the item at the register.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Cashier Price-Match Pass & Navigation</h3>
+            <div id="barcode-result-container">
+              <div class="empty-state">Select a barcode and press scan to view live match.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: EXACT-CENT BILL SPLIT -->
+      <section id="tab-feature4" class="tab-pane">
+        <div class="feature-header">
+          <h2>Core Feature 4: Social Bill Splitting & Digital Wallet (Exact-Cent Math)</h2>
+          <p>Frictionless light identity SMS bill splits. Zero app installation required for friends. Exact-cent integer math with 0.00% rounding loss.</p>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Create Group Bill Split</h3>
+            <div class="form-group">
+              <label class="form-label">Bill Title</label>
+              <input type="text" id="split-title" class="form-input" value="Dinner at Nobu Tab">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Total Amount ($)</label>
+              <input type="number" id="split-amount" class="form-input" value="100.00" step="0.01">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Participants (Name, Phone)</label>
+              <textarea id="split-participants" class="textarea-input" rows="4">
+Alex Rivera, +14155550192
+Jordan Lee, +14155550143
+Taylor Swift, +14155550188
+              </textarea>
+            </div>
+            <button class="btn btn-primary" onclick="calculateExactCentSplit()">
+              ⚡ Calculate Deterministic Exact-Cent Split
+            </button>
+          </div>
+
+          <div class="card">
+            <h3>Exact-Cent Ledger Allocation</h3>
+            <div id="split-results-container">
+              <div class="empty-state">Configure amount and participants to calculate zero-drift distribution.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: EXPANDABLE ROADMAP -->
+      <section id="tab-roadmap" class="tab-pane">
+        <div class="feature-header">
+          <h2>Volume I Module 3: Expandable AI Innovations & Autonomous Roadmap</h2>
+          <p>Preview next-generation autonomous financial interventions engineered into the platform architecture.</p>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>1. Automatic Spare Change Micro-Savings Round-Up Simulator</h3>
+            <p>Every card transaction rounds up to the nearest dollar into an interest-bearing vault.</p>
+            <div class="form-group mt-3">
+              <label class="form-label">Simulate Purchase Amount ($)</label>
+              <input type="number" id="roundup-amount" class="form-input" value="3.40" step="0.01">
+            </div>
+            <button class="btn btn-secondary" onclick="simulateRoundUp()">
+              Calculate Micro-Savings Sweep
+            </button>
+            <div id="roundup-result" class="mt-3"></div>
+          </div>
+
+          <div class="card">
+            <h3>2. Autonomous Telecom / Cable Retention Agent</h3>
+            <p>Monitors expired promotional contracts and deploys AI negotiation scripts.</p>
+            <div class="form-group mt-3">
+              <label class="form-label">Select Expired Utility Service</label>
+              <select id="telecom-service" class="form-select">
+                <option value="Comcast Xfinity">Comcast Xfinity Broadband (Jumped from $50 -> $85/mo)</option>
+                <option value="Verizon FiOS">Verizon FiOS Internet (Promo period ended)</option>
+                <option value="Spectrum">Spectrum Home Cable/Internet</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="generateRetentionScript()">
+              🤖 Generate AI Retention & Negotiation Script
+            </button>
+            <div id="retention-result" class="mt-3"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
